@@ -1,6 +1,6 @@
 // helper types for our stepMergeSort function
-type Action = "split" | "merge" | "done"
-type State = {
+export type Action = "split" | "merge" | "done"
+export type State = {
   arr: number[][],
   act: Action
 }

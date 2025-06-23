@@ -1,7 +1,9 @@
+import { Sorter } from '@/components/sorter'
+
 export default function HomePage() {
   return (
-    <main>
-      hello world
-    </main>
+    <div className="flex flex-col items-center">
+      <Sorter />
+    </div>
   );
 }
