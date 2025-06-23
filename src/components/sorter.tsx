@@ -48,9 +48,10 @@ export function Sorter() {
       {/* control row */}
       <div className="flex gap-4 ">
         <Input
-          className="flex-1"
+          className={sortState ? "flex-1 bg-gray-400" : "flex-1"}
           value={input}
           onChange={(e) => { setInput(e.target.value) }}
+          disabled={Boolean(sortState)}
         />
         {/* start and stop button */}
         <Button
