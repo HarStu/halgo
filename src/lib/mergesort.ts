@@ -1,31 +1,15 @@
-
-export function mergeSort(arr: number[]): number[] {
-  if (arr.length > 1) {
-    const mid = Math.floor(arr.length / 2)
-    const left = arr.slice(0, mid)
-    const right = arr.slice(mid, arr.length)
-
-    console.log(`Looking at array ${arr}`)
-    console.log(`The array has length ${arr.length}, and a midpoint of ${mid}`)
-    console.log(`left:  ${left}`)
-    console.log(`right: ${right}`)
-    console.log(`\n`)
-
-    const newLeft = mergeSort(left)
-    const newRight = mergeSort(right)
-
-    return merge(newLeft, newRight)
-
-  } else {
-    console.log(`arr only has one element: ${arr}. Return.`)
-    return arr
-  }
+// helper types for our stepMergeSort function
+type Action = "split" | "merge" | "done"
+type State = {
+  arr: number[][],
+  act: Action
 }
 
+// Merging helper function
 export function merge(left: number[], right: number[]) {
   let merged: number[] = []
-  const larr = left.reverse()
-  const rarr = right.reverse()
+  const larr = structuredClone(left.reverse())
+  const rarr = structuredClone(right.reverse())
   while (larr.length > 0 && rarr.length > 0) {
     if (rarr[rarr.length - 1]! < larr[larr.length - 1]!) {
       merged.push(rarr.pop()!)
@@ -43,5 +27,93 @@ export function merge(left: number[], right: number[]) {
   return merged
 }
 
-const arr = [2, 10, 3, 14, 7, 89, 30]
-console.log(`FINAL RESULT: ${mergeSort(arr)}`)
+// initial recursive merge sort
+export function mergeSort(arr: number[]): number[] {
+  if (arr.length > 1) {
+    const mid = Math.floor(arr.length / 2)
+
+    const leftArr = mergeSort(arr.slice(0, mid))
+    const rightArr = mergeSort(arr.slice(mid, arr.length))
+
+    return merge(leftArr, rightArr)
+
+  } else {
+    return arr
+  }
+}
+
+// Version that's easier to visualize
+export function mergeSortTwo(arr: number[]) {
+  let splitArr = [arr]
+  while (splitArr.find(subArr => (subArr.length > 1))) {
+    console.log(splitArr)
+    splitArr = splitArr.map(subArr => {
+      return [
+        subArr.slice(0, Math.floor(subArr.length / 2)),
+        subArr.slice(Math.floor(subArr.length / 2), subArr.length)
+      ]
+    }).flat()
+  }
+  console.log(splitArr)
+
+  console.log('and now we merge')
+
+  let baseArr = structuredClone(splitArr)
+  while (baseArr.length > 1) {
+    console.log(baseArr)
+    let workArr = []
+    for (let i = 0; i < baseArr.length; i += 2) {
+      workArr.push(merge(baseArr[i]!, baseArr[i + 1]!))
+    }
+    // if baseArr is odd, there'll be one leftover to account for 
+    baseArr = baseArr.length % 2 == 1 ? workArr.concat(baseArr.pop()!) : workArr
+  }
+  console.log(baseArr)
+}
+
+export function wrapArray(arr: number[]): number[][] {
+  return [arr]
+}
+
+export function stepMergeSort({ arr, act }: State): State {
+  if (act === 'split') {
+    if (arr.find(subArr => (subArr.length > 1))) {
+      arr = arr.map(subArr => {
+        return [
+          subArr.slice(0, Math.floor(subArr.length / 2)),
+          subArr.slice(Math.floor(subArr.length / 2), subArr.length)
+        ]
+      }).flat()
+    }
+
+    if (arr.find((subArr) => subArr.length > 1)) {
+      return { arr, act: 'split' }
+    } else {
+      return { arr, act: 'merge' }
+    }
+  } else if (act == 'merge') {
+    if (arr.length > 1) {
+      let workArr = []
+      for (let i = 0; i < arr.length; i += 2) {
+        workArr.push(merge(arr[i]!, arr[i + 1]!))
+      }
+      const retArr = arr.length % 2 == 1 ? workArr.concat(arr.pop()!) : workArr
+      return { arr: retArr, act: 'merge' }
+    }
+  }
+  return { arr, act: 'done' }
+}
+
+const start = wrapArray([4, 6, 9, 1, 7, 3, 5, 10, 1])
+let state: State = {
+  arr: start,
+  act: 'split'
+}
+
+while (state.act !== 'done') {
+  console.log(state.arr)
+  state = stepMergeSort(state)
+}
+
+
+//mergeSort(arr)
