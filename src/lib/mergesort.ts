@@ -1,22 +1,11 @@
+// helper type for our stepMergeSort function
+type Action = "split" | "merge"
 
-export function mergeSort(arr: number[]): number[] {
-  if (arr.length > 1) {
-    const mid = Math.floor(arr.length / 2)
-
-    const leftArr = mergeSort(arr.slice(0, mid))
-    const rightArr = mergeSort(arr.slice(mid, arr.length))
-
-    return merge(leftArr, rightArr)
-
-  } else {
-    return arr
-  }
-}
-
+// Merging helper function
 export function merge(left: number[], right: number[]) {
   let merged: number[] = []
-  const larr = left.reverse()
-  const rarr = right.reverse()
+  const larr = structuredClone(left.reverse())
+  const rarr = structuredClone(right.reverse())
   while (larr.length > 0 && rarr.length > 0) {
     if (rarr[rarr.length - 1]! < larr[larr.length - 1]!) {
       merged.push(rarr.pop()!)
@@ -33,3 +22,57 @@ export function merge(left: number[], right: number[]) {
 
   return merged
 }
+
+// initial recursive merge sort
+export function mergeSort(arr: number[]): number[] {
+  if (arr.length > 1) {
+    const mid = Math.floor(arr.length / 2)
+
+    const leftArr = mergeSort(arr.slice(0, mid))
+    const rightArr = mergeSort(arr.slice(mid, arr.length))
+
+    return merge(leftArr, rightArr)
+
+  } else {
+    return arr
+  }
+}
+
+// Version that's easier to visualize
+export function mergeSortTwo(arr: number[]) {
+  let splitArr = [arr]
+  while (splitArr.find(subArr => (subArr.length > 1))) {
+    console.log(splitArr)
+    splitArr = splitArr.map(subArr => {
+      return [
+        subArr.slice(0, Math.floor(subArr.length / 2)),
+        subArr.slice(Math.floor(subArr.length / 2), subArr.length)
+      ]
+    }).flat()
+  }
+  console.log(splitArr)
+
+  console.log('and now we merge')
+
+  let baseArr = structuredClone(splitArr)
+  while (baseArr.length > 1) {
+    console.log(baseArr)
+    let workArr = []
+    for (let i = 0; i < baseArr.length; i += 2) {
+      workArr.push(merge(baseArr[i]!, baseArr[i + 1]!))
+    }
+    // if baseArr is odd, there'll be one leftover to account for 
+    baseArr = baseArr.length % 2 == 1 ? workArr.concat(baseArr.pop()!) : workArr
+  }
+  console.log(baseArr)
+}
+
+export function stepMergeSort(arr: number[], act: "split" | "merge") {
+  if act 
+
+}
+
+const arr = [4, 6, 9, 1, 7, 3, 5, 10, 1]
+mergeSortTwo(arr)
+
+//mergeSort(arr)
