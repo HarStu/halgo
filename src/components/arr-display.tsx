@@ -1,38 +1,40 @@
 import type { State } from '@/lib/mergesort'
+import { motion } from 'motion/react'
+import { randomUUID } from 'crypto'
 
 export function ArrDisplay({ state }: { state: State | undefined }) {
 
   function mapMainArray(arr: number[][]) {
     return (
-      <div className="flex gap-8">
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex gap-8">
         {
-          arr.map((arr, idx) => {
+          arr.map((arr) => {
             if (arr.length !== 0) {
               return (
-                <div id={idx.toString()}>
+                <motion.div id={randomUUID()}>
                   {mapSubArray(arr)}
-                </div>
+                </motion.div>
               )
             } else {
               return undefined
             }
           })
         }
-      </div>
+      </motion.div>
     )
   }
 
   function mapSubArray(arr: number[]) {
     return (
-      <div className="flex border-2 rounded-2xl bg-amber-200 p-4 gap-4">
-        {arr.map((num, idx) => {
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex border-2 rounded-2xl bg-amber-200 p-4 gap-4">
+        {arr.map((num) => {
           return (
-            <div className="border-2 rounded-2xl p-2 bg-amber-400" id={idx.toString()}>
+            <motion.div className="border-2 rounded-2xl p-2 bg-amber-400" id={randomUUID()}>
               {num}
-            </div>
+            </motion.div>
           )
         })}
-      </ div>
+      </motion.div>
     )
   }
 
@@ -58,10 +60,10 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
     )
   } else {
     return (
-      <div className="flex flex-col text-center gap-8 p-6">
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex flex-col text-center gap-8 p-6">
         {mapMainArray(state.arr)}
         {flavorText()}
-      </div>
+      </motion.div>
 
     )
 
