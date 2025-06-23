@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import clsx from 'clsx'
+import { useState } from 'react'
 
 import { Play, OctagonX, StepForward } from 'lucide-react'
 import { Button } from 'src/components/ui/button'
 import { Input } from 'src/components/ui/input'
 import { toast } from 'sonner'
 
+import { ArrDisplay } from 'src/components/arr-display'
 import { wrapArray, stepMergeSort } from '@/lib/mergesort'
 import type { State } from '@/lib/mergesort'
 
@@ -43,7 +43,7 @@ export function Sorter() {
   }
 
   return (
-    <div className="flex border-2 rounded bg-amber-200 flex-col size-2/3 gap-12 m-6 p-6">
+    <div className="flex border-2 rounded-2xl bg-amber-200 flex-col size-2/3 gap-12 m-6 p-6">
 
       {/* control row */}
       <div className="flex gap-4 ">
@@ -52,6 +52,7 @@ export function Sorter() {
           value={input}
           onChange={(e) => { setInput(e.target.value) }}
         />
+        {/* start and stop button */}
         <Button
           className={sortState ? 'bg-red-400' : 'bg-green-400'}
           size='icon'
@@ -59,7 +60,7 @@ export function Sorter() {
         >
           {sortState ? <OctagonX /> : <Play />}
         </Button>
-
+        {/* iterate sort button */}
         <Button
           className={sortState ? 'bg-amber-400' : 'bg-gray-400'}
           variant={sortState ? 'default' : 'inactive'}
@@ -71,14 +72,10 @@ export function Sorter() {
       </div>
 
       {/* display row */}
-      <div className="text-center">
-        {
-          sortState ?
-            sortState.arr :
-            'List some numbers and press start to begin!'
-        }
+      <div className='flex text-center justify-center items-center bg-white border-2 rounded-2xl m-6 h-40'>
+        <ArrDisplay state={sortState} />
       </div>
-
     </div>
+
   )
 }
