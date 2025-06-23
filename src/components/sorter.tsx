@@ -19,7 +19,7 @@ export function Sorter() {
     // validate the input string
     const ok = /^\s*\d+\s*(,\s*\d+\s*)*$/.test(input);
     if (!ok) {
-      toast.warning("invalid input, please use numbers separated by commas")
+      toast.warning("invalid input, please use numbers separated by commas!")
     } else {
       const newState: State = {
         arr: wrapArray((input.split(',')).map(num => Number(num.trim()))),
@@ -31,7 +31,7 @@ export function Sorter() {
 
   function iterateSortState() {
     if (!sortState) {
-      toast.warning('no valid sort state, cannot iterate')
+      toast.warning('input numbers and press start first!')
     } else {
       setSortState(stepMergeSort(sortState))
       console.log('sortState')
@@ -41,10 +41,6 @@ export function Sorter() {
   function haltSort() {
     setSortState(undefined)
   }
-
-  useEffect(() => {
-    console.log('placeholder')
-  }, [])
 
   return (
     <div className="flex border-2 rounded bg-amber-200 flex-col size-2/3 gap-12 m-6 p-6">
@@ -65,6 +61,8 @@ export function Sorter() {
         </Button>
 
         <Button
+          className={sortState ? 'bg-amber-400' : 'bg-gray-400'}
+          variant={sortState ? 'default' : 'inactive'}
           size='icon'
           onClick={iterateSortState}
         >
@@ -77,7 +75,7 @@ export function Sorter() {
         {
           sortState ?
             sortState.arr :
-            'not currently sorting'
+            'List some numbers and press start to begin!'
         }
       </div>
 
