@@ -72,7 +72,7 @@ export function Sorter() {
       </div>
 
       {/* display row */}
-      <div className='flex text-center justify-center items-center bg-white border-2 rounded-2xl m-6 h-40'>
+      <div className='flex text-center justify-center items-center bg-white border-2 rounded-2xl m-6 min-h-60'>
         <ArrDisplay state={sortState} />
       </div>
     </div>

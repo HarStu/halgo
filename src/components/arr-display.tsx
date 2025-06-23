@@ -36,6 +36,20 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
     )
   }
 
+  function flavorText() {
+    if (state) {
+      if (state.act == 'split') {
+        return "splitting the array..."
+      } else if (state.act === "merge") {
+        return "merging the subarrays"
+      } else if (state.act === "done") {
+        return "sorted!"
+      }
+    } else {
+      return undefined
+    }
+  }
+
   if (!state) {
     return (
       <div>
@@ -44,11 +58,11 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
     )
   } else {
     return (
-      <div>
-        <div className="flex flex-col gap-8">
-          {mapMainArray(state.arr)}
-        </div>
+      <div className="flex flex-col text-center gap-8 p-6">
+        {mapMainArray(state.arr)}
+        {flavorText()}
       </div>
+
     )
 
   }
