@@ -1,5 +1,5 @@
 // helper type for our stepMergeSort function
-type Action = "split" | "merge"
+type Action = "split" | "merge" | "done"
 
 // Merging helper function
 export function merge(left: number[], right: number[]) {
@@ -67,12 +67,49 @@ export function mergeSortTwo(arr: number[]) {
   console.log(baseArr)
 }
 
-export function stepMergeSort(arr: number[], act: "split" | "merge") {
-  if act 
-
+export function wrapArray(arr: number[]): number[][] {
+  return [arr]
 }
 
-const arr = [4, 6, 9, 1, 7, 3, 5, 10, 1]
-mergeSortTwo(arr)
+export function stepMergeSort({ arr, act }: { arr: number[][], act: Action }): { arr: number[][], act: Action } {
+  if (act === 'split') {
+    if (arr.find(subArr => (subArr.length > 1))) {
+      arr = arr.map(subArr => {
+        return [
+          subArr.slice(0, Math.floor(subArr.length / 2)),
+          subArr.slice(Math.floor(subArr.length / 2), subArr.length)
+        ]
+      }).flat()
+    }
+
+    if (arr.find((subArr) => subArr.length > 1)) {
+      return { arr, act: 'split' as Action }
+    } else {
+      return { arr, act: 'merge' as Action }
+    }
+  } else if (act == 'merge') {
+    if (arr.length > 1) {
+      let workArr = []
+      for (let i = 0; i < arr.length; i += 2) {
+        workArr.push(merge(arr[i]!, arr[i + 1]!))
+      }
+      const retArr = arr.length % 2 == 1 ? workArr.concat(arr.pop()!) : workArr
+      return { arr: retArr, act: 'merge' as Action }
+    }
+  }
+  return { arr, act: 'done' as Action }
+}
+
+const start = wrapArray([4, 6, 9, 1, 7, 3, 5, 10, 1])
+let state = {
+  arr: start,
+  act: 'split' as Action
+}
+
+while (state.act !== 'done') {
+  console.log(state.arr)
+  state = stepMergeSort(state)
+}
+
 
 //mergeSort(arr)
