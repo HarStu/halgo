@@ -43,7 +43,7 @@ export function Sorter() {
   }
 
   return (
-    <div className="flex border-2 rounded-2xl bg-amber-200 flex-col size-2/3 gap-12 m-6 p-6">
+    <div className="flex flex-col border-2 rounded-2xl bg-amber-200 w-2/3 gap-6 p-6">
 
       {/* control row */}
       <div className="flex gap-4 ">
