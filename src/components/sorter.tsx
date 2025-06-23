@@ -43,14 +43,15 @@ export function Sorter() {
   }
 
   return (
-    <div className="flex border-2 rounded-2xl bg-amber-200 flex-col size-2/3 gap-12 m-6 p-6">
+    <div className="flex flex-col border-2 rounded-2xl bg-amber-200 w-2/3 gap-6 p-6">
 
       {/* control row */}
       <div className="flex gap-4 ">
         <Input
-          className="flex-1"
+          className={sortState ? "flex-1 bg-gray-400" : "flex-1"}
           value={input}
           onChange={(e) => { setInput(e.target.value) }}
+          disabled={Boolean(sortState)}
         />
         {/* start and stop button */}
         <Button
