@@ -1,5 +1,9 @@
-// helper type for our stepMergeSort function
+// helper types for our stepMergeSort function
 type Action = "split" | "merge" | "done"
+type State = {
+  arr: number[][],
+  act: Action
+}
 
 // Merging helper function
 export function merge(left: number[], right: number[]) {
@@ -71,7 +75,7 @@ export function wrapArray(arr: number[]): number[][] {
   return [arr]
 }
 
-export function stepMergeSort({ arr, act }: { arr: number[][], act: Action }): { arr: number[][], act: Action } {
+export function stepMergeSort({ arr, act }: State): State {
   if (act === 'split') {
     if (arr.find(subArr => (subArr.length > 1))) {
       arr = arr.map(subArr => {
@@ -83,9 +87,9 @@ export function stepMergeSort({ arr, act }: { arr: number[][], act: Action }): {
     }
 
     if (arr.find((subArr) => subArr.length > 1)) {
-      return { arr, act: 'split' as Action }
+      return { arr, act: 'split' }
     } else {
-      return { arr, act: 'merge' as Action }
+      return { arr, act: 'merge' }
     }
   } else if (act == 'merge') {
     if (arr.length > 1) {
@@ -94,16 +98,16 @@ export function stepMergeSort({ arr, act }: { arr: number[][], act: Action }): {
         workArr.push(merge(arr[i]!, arr[i + 1]!))
       }
       const retArr = arr.length % 2 == 1 ? workArr.concat(arr.pop()!) : workArr
-      return { arr: retArr, act: 'merge' as Action }
+      return { arr: retArr, act: 'merge' }
     }
   }
-  return { arr, act: 'done' as Action }
+  return { arr, act: 'done' }
 }
 
 const start = wrapArray([4, 6, 9, 1, 7, 3, 5, 10, 1])
-let state = {
+let state: State = {
   arr: start,
-  act: 'split' as Action
+  act: 'split'
 }
 
 while (state.act !== 'done') {
