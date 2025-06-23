@@ -5,7 +5,7 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
 
   function mapMainArray(arr: number[][]) {
     return (
-      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex gap-8">
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex gap-4">
         {
           arr.map((arr) => {
             if (arr.length !== 0) {
@@ -25,7 +25,7 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
 
   function mapSubArray(arr: number[]) {
     return (
-      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex border-2 rounded-2xl bg-amber-200 p-4 gap-4">
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex border-2 rounded-2xl bg-amber-200 p-2 gap-4">
         {arr.map((num) => {
           return (
             <motion.div className="border-2 rounded-2xl p-2 bg-amber-400" key={crypto.randomUUID()}>
@@ -59,7 +59,7 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
     )
   } else {
     return (
-      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex flex-col text-center gap-8 p-6">
+      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex flex-col text-center gap-6 p-4">
         {mapMainArray(state.arr)}
         {flavorText()}
       </motion.div>
