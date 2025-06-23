@@ -1,6 +1,5 @@
 import type { State } from '@/lib/mergesort'
 import { motion } from 'motion/react'
-import { randomUUID } from 'crypto'
 
 export function ArrDisplay({ state }: { state: State | undefined }) {
 
@@ -11,7 +10,7 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
           arr.map((arr) => {
             if (arr.length !== 0) {
               return (
-                <motion.div id={randomUUID()}>
+                <motion.div key={crypto.randomUUID()}>
                   {mapSubArray(arr)}
                 </motion.div>
               )
@@ -29,7 +28,7 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex border-2 rounded-2xl bg-amber-200 p-4 gap-4">
         {arr.map((num) => {
           return (
-            <motion.div className="border-2 rounded-2xl p-2 bg-amber-400" id={randomUUID()}>
+            <motion.div className="border-2 rounded-2xl p-2 bg-amber-400" key={crypto.randomUUID()}>
               {num}
             </motion.div>
           )
@@ -41,9 +40,9 @@ export function ArrDisplay({ state }: { state: State | undefined }) {
   function flavorText() {
     if (state) {
       if (state.act == 'split') {
-        return "splitting the array..."
+        return "first, we split up the array"
       } else if (state.act === "merge") {
-        return "merging the subarrays"
+        return "then, we merge the subarrays in-order"
       } else if (state.act === "done") {
         return "sorted!"
       }
