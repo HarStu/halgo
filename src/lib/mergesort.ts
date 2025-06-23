@@ -98,7 +98,12 @@ export function stepMergeSort({ arr, act }: State): State {
         workArr.push(merge(arr[i]!, arr[i + 1]!))
       }
       const retArr = arr.length % 2 == 1 ? workArr.concat(arr.pop()!) : workArr
-      return { arr: retArr, act: 'merge' }
+
+      if (retArr.length === 1) {
+        return { arr: retArr, act: 'done' }
+      } else {
+        return { arr: retArr, act: 'merge' }
+      }
     }
   }
   return { arr, act: 'done' }
