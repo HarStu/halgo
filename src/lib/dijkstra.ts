@@ -54,10 +54,15 @@ function dijkstra(graph: Graph) {
     let current = undefined
     let minDist = Infinity
     for (let [node, dist] of dists) {
-      if (dist < minDist) {
+      if (dist < minDist && unvisited.has(node)) {
         current = node
         minDist = dist
       }
+    }
+
+    // abort if we can't find any more nodes to go to (current is still undefined)
+    if (current === undefined) {
+      return
     }
 
     // remove the current node from the set of unvisited nodes
@@ -94,8 +99,9 @@ function dijkstra(graph: Graph) {
   }
 }
 
-const res = dijkstra(graph1)
-console.log(JSON.stringify(res))
+const { dists, prevs } = dijkstra(graph1)!
+console.log('dists: ', [...dists])
+console.log('prevs: ', [...prevs])
 
 function heapInsert(heap: number[], val: number) {
   // add new element
