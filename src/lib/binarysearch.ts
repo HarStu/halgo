@@ -13,19 +13,19 @@ function binarySearch(arr: number[], target: number, lowIdx: number, highIdx: nu
   const midIdx = Math.floor((lowIdx + highIdx) / 2)
   console.log(`middle index here is ${midIdx}`)
 
-  if (arr.length === 0) {
-    // target not in array
-    console.log(`target not in array`)
-    return -1
-  } else if (arr[midIdx] === target) {
-    console.log(`target found! ${target} === ${arr[midIdx]}`)
+  if (arr[midIdx] === target) {
+    // target found
+    console.log(`target found`)
     return midIdx
+  } else if (lowIdx === highIdx) {
+    console.log(`target not in arr`)
+    return -1
   } else if (arr[midIdx]! < target) {
     console.log(`midIdx value ${arr[midIdx]} < target ${target}`)
-    return binarySearch(vals, target, lowIdx, midIdx)
+    return binarySearch(vals, target, midIdx, highIdx)
   } else if (target < arr[midIdx]!) {
     console.log(`target value ${target} < midIdx value ${arr[midIdx]}`)
-    return binarySearch(vals, target, midIdx, highIdx)
+    return binarySearch(vals, target, lowIdx, midIdx)
   }
 }
 
@@ -42,3 +42,4 @@ const vals = [
 ]
 
 console.log(binarySearch(vals, 322, 0, vals.length))
+console.log(vals[78])
