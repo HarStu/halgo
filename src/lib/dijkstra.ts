@@ -47,21 +47,22 @@ function heapInsert(heap: number[], val: number) {
   // add new element
   heap.push(val)
 
-  // adjust the heap
-  return balanceHeap(heap)
-}
+  // index of new element 
+  let idx = heap.length - 1
 
-function balanceHeap(heap: number[]) {
-  for (let idx = heap.length - 1; idx > 0; idx++) {
-    const parentIdx = ((idx - ((idx % 2) ? 1 : 2))) / 2
+  // index of new element's parent
+  let parentIdx = ((idx - ((idx % 2) ? 1 : 2))) / 2
 
-    if (heap[parentIdx]! > heap[idx]!) {
-      const val = heap[idx]
-      heap[idx] = heap[parentIdx]!
-      heap[parentIdx] = val!
-      balanceHeap(heap)
-    }
+  // swap our way up the heap
+  while (idx > 0 && heap[parentIdx]! > heap[idx]!) {
+    const val = heap[idx]
+    heap[idx] = heap[parentIdx]!
+    heap[parentIdx] = val!
+    idx = parentIdx
+    parentIdx = ((idx - ((idx % 2) ? 1 : 2))) / 2
   }
+
+  // adjust the heap
   return heap
 }
 
