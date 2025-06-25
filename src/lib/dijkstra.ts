@@ -1,6 +1,5 @@
 export type Edge = {
-  from: string,
-  to: string,
+  nodes: string[],
   weight: number
 }
 
@@ -9,25 +8,36 @@ export type Graph = {
   edges: Edge[]
 }
 
-const graph = {
-  nodes: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"],
+const graph1 = {
+  nodes: ['a', 'b', 'c', 'd'],
   edges: [
-    { from: "a", to: "b", weight: 3 },
-    { from: "a", to: "d", weight: 9 },
-    { from: "d", to: "c", weight: 4 },
-    { from: "b", to: "e", weight: 9 },
-    { from: "c", to: "f", weight: 6 },
-    { from: "c", to: "i", weight: 2 },
-    { from: "e", to: "f", weight: 5 },
-    { from: "f", to: "g", weight: 5 },
-    { from: "f", to: "h", weight: 2 },
-    { from: "h", to: "j", weight: 3 },
-    { from: "g", to: "k", weight: 5 },
-    { from: "j", to: "k", weight: 6 },
+    { nodes: ['a', 'b'], weight: 2 },
+    { nodes: ['a', 'c'], weight: 9 },
+    { nodes: ['b', 'c'], weight: 3 },
+    { nodes: ['b', 'd'], weight: 10 },
+    { nodes: ['c', 'd'], weight: 6 }
   ]
 }
 
-function dijkstra(graph: Graph, sourceId: string) {
+const graph2 = {
+  nodes: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"],
+  edges: [
+    { nodes: ['a', 'b'], weight: 3 },
+    { nodes: ['a', 'd'], weight: 9 },
+    { nodes: ['d', 'c'], weight: 4 },
+    { nodes: ['b', 'e'], weight: 9 },
+    { nodes: ['c', 'f'], weight: 6 },
+    { nodes: ['c', 'i'], weight: 2 },
+    { nodes: ['e', 'f'], weight: 5 },
+    { nodes: ['f', 'g'], weight: 5 },
+    { nodes: ['f', 'h'], weight: 2 },
+    { nodes: ['h', 'j'], weight: 3 },
+    { nodes: ['g', 'k'], weight: 5 },
+    { nodes: ['j', 'k'], weight: 6 },
+  ]
+}
+
+function dijkstra(graph: Graph) {
   const dists = new Map<string, number>()
   const prevs = new Map<string, string | undefined>()
 
@@ -51,9 +61,31 @@ function dijkstra(graph: Graph, sourceId: string) {
     }
 
     // remove the current node from the set of unvisited nodes
+    unvisited.delete(current)
 
+    // produce a list of all the edges involving 'current' and another node in 'unvisited'
+    const curEdges = []
+    for (let edge of graph.edges) {
+      if (edge.nodes[0] === current && unvisited.has(edge.nodes[1])) {
+        curEdges.push(edge)
+      }
+    }
+
+    // iterate over the edges found
+    for (let edge of curEdges) {
+      // calculate the total distance to connected nodes via edges from current
+      const newDist = dists.get(edge.nodes[0]!)! + edge.weight
+      // if any of these distances are less than the current shortest distance to that node, update
+      if (newDist < dists.get(edge.nodes[1]!)!) {
+        dists.set(edge.nodes[0]!, newDist)
+        prevs.set(edge.nodes[1]!, edge.nodes[0]!)
+      }
+    }
   }
-
+  return {
+    prevs,
+    dists
+  }
 }
 
 
