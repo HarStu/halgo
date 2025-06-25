@@ -73,12 +73,18 @@ function dijkstra(graph: Graph) {
 
     // iterate over the edges found
     for (let edge of curEdges) {
-      // calculate the total distance to connected nodes via edges from current
-      const newDist = dists.get(edge.nodes[0]!)! + edge.weight
-      // if any of these distances are less than the current shortest distance to that node, update
-      if (newDist < dists.get(edge.nodes[1]!)!) {
-        dists.set(edge.nodes[0]!, newDist)
-        prevs.set(edge.nodes[1]!, edge.nodes[0]!)
+      // calculate the total path distance:
+      // - from the current node
+      // - to the neighbor node
+      // - along the current edge we're looking at
+      const neighbor = edge.nodes[1]!
+      const newDist = dists.get(current!)! + edge.weight
+
+      // if this total path distance to the neighbor node is less than dist[neighbor]
+      // update dist[neighbor] and prev[neighbor]
+      if (newDist < dists.get(neighbor)!) {
+        dists.set(neighbor, newDist)
+        prevs.set(neighbor, current)
       }
     }
   }
@@ -88,6 +94,8 @@ function dijkstra(graph: Graph) {
   }
 }
 
+const res = dijkstra(graph1)
+console.log(JSON.stringify(res))
 
 function heapInsert(heap: number[], val: number) {
   // add new element
